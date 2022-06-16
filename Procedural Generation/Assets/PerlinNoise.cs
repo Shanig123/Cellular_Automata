@@ -24,7 +24,7 @@ public class PerlinNoise : MonoBehaviour
     {
         return noiseTex;
     }
-    void Start()
+    private void Awake()
     {
         rend = GetComponent<Renderer>();
 
@@ -32,20 +32,32 @@ public class PerlinNoise : MonoBehaviour
         noiseTex = new Texture2D(pixWidth, pixHeight);
         pix = new Color[noiseTex.width * noiseTex.height];
         rend.material.mainTexture = noiseTex;
+        CalcNoise();
+
+    }
+    void Start()
+    {
+
+
+       
     }
 
     void CalcNoise()
     {
         // For each pixel in the texture...
         float y = 0.0F;
-
+        float time = Time.deltaTime;
+        xOrg += time;
+        yOrg += time;
         while (y < noiseTex.height)
         {
             float x = 0.0F;
             while (x < noiseTex.width)
             {
                 float xCoord = xOrg + x / noiseTex.width * scale;
+
                 float yCoord = yOrg + y / noiseTex.height * scale;
+
                 float sample = Mathf.PerlinNoise(xCoord, yCoord);
                 pix[(int)y * noiseTex.width + (int)x] = new Color(sample, sample, sample);
                 x++;
