@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -37,7 +37,7 @@ public class CellularAutomata : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0)) GenerateMap();
+        if (Input.GetMouseButton(0)) GenerateMap();
     }
 
     private void GenerateMap()
@@ -45,15 +45,15 @@ public class CellularAutomata : MonoBehaviour
         map = new int[width, height];
         MapRandomFill();
 
-        for (int i = 0; i < smoothNum; i++) //¹İº¹ÀÌ ¸¹À»¼ö·Ï µ¿±¼ÀÇ °æ°è¸éÀÌ ¸Å²ô·¯¿öÁø´Ù.
+        for (int i = 0; i < smoothNum; i++) //ë°˜ë³µì´ ë§ì„ìˆ˜ë¡ ë™êµ´ì˜ ê²½ê³„ë©´ì´ ë§¤ë„ëŸ¬ì›Œì§„ë‹¤.
             SmoothMap();
     }
 
-    private void MapRandomFill() //¸ÊÀ» ºñÀ²¿¡ µû¶ó º® È¤Àº ºó °ø°£À¸·Î ·£´ıÇÏ°Ô Ã¤¿ì´Â ¸Ş¼Òµå
+    private void MapRandomFill() //ë§µì„ ë¹„ìœ¨ì— ë”°ë¼ ë²½ í˜¹ì€ ë¹ˆ ê³µê°„ìœ¼ë¡œ ëœë¤í•˜ê²Œ ì±„ìš°ëŠ” ë©”ì†Œë“œ
     {
-        if (useRandomSeed) seed = Time.time.ToString(); //½Ãµå
+        if (useRandomSeed) seed = Time.time.ToString(); //ì‹œë“œ
 
-        System.Random pseudoRandom = new System.Random(seed.GetHashCode()); //½Ãµå·Î ºÎÅÍ ÀÇ»ç ³­¼ö »ı¼º
+        System.Random pseudoRandom = new System.Random(seed.GetHashCode()); //ì‹œë“œë¡œ ë¶€í„° ì˜ì‚¬ ë‚œìˆ˜ ìƒì„±
       
         for (int x = 0; x < width; x++)
         {
@@ -61,10 +61,10 @@ public class CellularAutomata : MonoBehaviour
             {
                 Color _color = m_Noise.GetPixel(x, y);
                 float per = randomFillPercent * 0.01f;
-                if (x == 0 || x == width - 1 || y == 0 || y == height - 1) map[x, y] = WALL; //°¡ÀåÀÚ¸®´Â º®À¸·Î Ã¤¿ò
-                else map[x, y] = (_color.r < per) ? WALL : ROAD; //ºñÀ²¿¡ µû¶ó º® È¤Àº ºó °ø°£ »ı¼º
-                OnDrawTile(x, y); //Å¸ÀÏ »ı¼º
-                SetTileColor(x, y); //Å¸ÀÏ »ö»ó ¼³Á¤
+                if (x == 0 || x == width - 1 || y == 0 || y == height - 1) map[x, y] = WALL; //ê°€ì¥ìë¦¬ëŠ” ë²½ìœ¼ë¡œ ì±„ì›€
+                else map[x, y] = (_color.r < per) ? WALL : ROAD; //ë¹„ìœ¨ì— ë”°ë¼ ë²½ í˜¹ì€ ë¹ˆ ê³µê°„ ìƒì„±
+                OnDrawTile(x, y); //íƒ€ì¼ ìƒì„±
+                SetTileColor(x, y); //íƒ€ì¼ ìƒ‰ìƒ ì„¤ì •
             }
         }
         m_Cellular.Apply();
@@ -77,9 +77,9 @@ public class CellularAutomata : MonoBehaviour
             for (int y = 0; y < height; y++)
             {
                 int neighbourWallTiles = GetSurroundingWallCount(x, y);
-                if (neighbourWallTiles > 4) map[x, y] = WALL; //ÁÖº¯ Ä­ Áß º®ÀÌ 4Ä­À» ÃÊ°úÇÒ °æ¿ì ÇöÀç Å¸ÀÏÀ» º®À¸·Î ¹Ù²Ş
-                else if (neighbourWallTiles < 4) map[x, y] = ROAD; //ÁÖº¯ Ä­ Áß º®ÀÌ 4Ä­ ¹Ì¸¸ÀÏ °æ¿ì ÇöÀç Å¸ÀÏÀ» ºó °ø°£À¸·Î ¹Ù²Ş
-                SetTileColor(x, y); //Å¸ÀÏ »ö»ó º¯°æ
+                if (neighbourWallTiles > 4) map[x, y] = WALL; //ì£¼ë³€ ì¹¸ ì¤‘ ë²½ì´ 4ì¹¸ì„ ì´ˆê³¼í•  ê²½ìš° í˜„ì¬ íƒ€ì¼ì„ ë²½ìœ¼ë¡œ ë°”ê¿ˆ
+                else if (neighbourWallTiles < 4) map[x, y] = ROAD; //ì£¼ë³€ ì¹¸ ì¤‘ ë²½ì´ 4ì¹¸ ë¯¸ë§Œì¼ ê²½ìš° í˜„ì¬ íƒ€ì¼ì„ ë¹ˆ ê³µê°„ìœ¼ë¡œ ë°”ê¿ˆ
+                SetTileColor(x, y); //íƒ€ì¼ ìƒ‰ìƒ ë³€ê²½
             }
         }
         m_Cellular.Apply();
@@ -89,14 +89,14 @@ public class CellularAutomata : MonoBehaviour
     {
         int wallCount = 0;
         for (int neighbourX = gridX - 1; neighbourX <= gridX + 1; neighbourX++)
-        { //ÇöÀç ÁÂÇ¥¸¦ ±âÁØÀ¸·Î ÁÖº¯ 8Ä­ °Ë»ç
+        { //í˜„ì¬ ì¢Œí‘œë¥¼ ê¸°ì¤€ìœ¼ë¡œ ì£¼ë³€ 8ì¹¸ ê²€ì‚¬
             for (int neighbourY = gridY - 1; neighbourY <= gridY + 1; neighbourY++)
             {
                 if (neighbourX >= 0 && neighbourX < width && neighbourY >= 0 && neighbourY < height)
-                { //¸Ê ¹üÀ§¸¦ ÃÊ°úÇÏÁö ¾Ê°Ô Á¶°Ç¹®À¸·Î °Ë»ç
-                    if (neighbourX != gridX || neighbourY != gridY) wallCount += map[neighbourX, neighbourY]; //º®Àº 1ÀÌ°í ºó °ø°£Àº 0ÀÌ¹Ç·Î º®ÀÏ °æ¿ì wallCount Áõ°¡
+                { //ë§µ ë²”ìœ„ë¥¼ ì´ˆê³¼í•˜ì§€ ì•Šê²Œ ì¡°ê±´ë¬¸ìœ¼ë¡œ ê²€ì‚¬
+                    if (neighbourX != gridX || neighbourY != gridY) wallCount += map[neighbourX, neighbourY]; //ë²½ì€ 1ì´ê³  ë¹ˆ ê³µê°„ì€ 0ì´ë¯€ë¡œ ë²½ì¼ ê²½ìš° wallCount ì¦ê°€
                 }
-                else wallCount++; //ÁÖº¯ Å¸ÀÏÀÌ ¸Ê ¹üÀ§¸¦ ¹ş¾î³¯ °æ¿ì wallCount Áõ°¡
+                else wallCount++; //ì£¼ë³€ íƒ€ì¼ì´ ë§µ ë²”ìœ„ë¥¼ ë²—ì–´ë‚  ê²½ìš° wallCount ì¦ê°€
             }
         }
         return wallCount;
@@ -104,8 +104,8 @@ public class CellularAutomata : MonoBehaviour
 
     private void SetTileColor(int x, int y)
     {
-        Vector3Int pos = new Vector3Int(-width / 2 + x, -height / 2 + y, 0); //È­¸é Áß¾Ó Á¤·Ä
-        //tilemap.SetTileFlags(pos, TileFlags.None); //Å¸ÀÏ »ö»óÀ» ¼öÁ¤ÇÏ±â À§ÇØ TileFlags¸¦ NoneÀ¸·Î ¼³Á¤
+        //Vector3Int pos = new Vector3Int(-width / 2 + x, -height / 2 + y, 0); //í™”ë©´ ì¤‘ì•™ ì •ë ¬
+        //tilemap.SetTileFlags(pos, TileFlags.None); //íƒ€ì¼ ìƒ‰ìƒì„ ìˆ˜ì •í•˜ê¸° ìœ„í•´ TileFlagsë¥¼ Noneìœ¼ë¡œ ì„¤ì •
         switch (map[x, y])
         {
             //      noiseTex.SetPixels(pix);

@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 423925525}
   - component: {fileID: 423925529}
   m_Layer: 0
-  m_Name: Quad (1)
+  m_Name: CellularAutomata
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -232,11 +232,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55c3c554d774d9947b5053e4b9af2e3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 128
-  height: 128
+  width: 256
+  height: 256
   seed: 
   useRandomSeed: 1
-  randomFillPercent: 0
+  randomFillPercent: 52
   smoothNum: 0
   m_Cellular: {fileID: 0}
   m_Cellularcolors:
@@ -277,11 +277,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e3ede5ba0ef7b74ca5f415a84c777cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pixWidth: 128
-  pixHeight: 128
-  xOrg: 1
-  yOrg: 1
-  scale: 10
+  pixWidth: 256
+  pixHeight: 256
+  xOrg: 10
+  yOrg: 10
+  scale: 40
+  m_timer: 0
+  m_iSeedNumber: 0
 --- !u!64 &661024041
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -452,6 +454,61 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &895063756
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 895063757}
+  - component: {fileID: 895063758}
+  m_Layer: 0
+  m_Name: 3D_CelluarAutomata
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &895063757
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 895063756}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &895063758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 895063756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f7db86bf208a694e9d3b8ac2bc6f4ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  width: 32
+  height: 32
+  length: 32
+  seed: 0
+  useRandomSeed: 1
+  randomFillPercent: 50
+  smoothNum: 1
+  neighbourCheckCount: 15
+  m_CellularAutomataPixelPrefab: {fileID: 4053190970195431416, guid: c54bc4f0057020044a048d443ca44dae, type: 3}
+  m_Noise: {fileID: 0}
+  m_NoiseColors: []
+  m_Renderer: {fileID: 0}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0

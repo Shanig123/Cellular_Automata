@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,10 +15,12 @@ public class PerlinNoise : MonoBehaviour
     // The number of cycles of the basic noise pattern that are repeated
     // over the width and height of the texture.
     public float scale = 1.0F;
-
+    public float m_timer = 0;
+    public int m_iSeedNumber = 0;
     private Texture2D noiseTex;
     private Color[] pix;
     private Renderer rend;
+
     
     public Texture2D GetTex()
     {
@@ -37,26 +39,32 @@ public class PerlinNoise : MonoBehaviour
     }
     void Start()
     {
+        m_timer = Time.deltaTime.GetHashCode();
+        m_iSeedNumber = Time.time.GetHashCode();
+        if (m_iSeedNumber == 0)
+        {
+            m_iSeedNumber = System.DateTime.Now.GetHashCode();
+        }
 
 
-       
     }
 
     void CalcNoise()
     {
         // For each pixel in the texture...
         float y = 0.0F;
-        float time = Time.deltaTime;
-        xOrg += time;
-        yOrg += time;
+
+        var rand = new System.Random(m_iSeedNumber);
+        var num = rand.Next(0, (int)xOrg + (int)yOrg);
         while (y < noiseTex.height)
         {
             float x = 0.0F;
             while (x < noiseTex.width)
             {
-                float xCoord = xOrg + x / noiseTex.width * scale;
+              
+                float xCoord = xOrg + x / noiseTex.width * scale+ num;
 
-                float yCoord = yOrg + y / noiseTex.height * scale;
+                float yCoord = yOrg + y / noiseTex.height * scale+ num;
 
                 float sample = Mathf.PerlinNoise(xCoord, yCoord);
                 pix[(int)y * noiseTex.width + (int)x] = new Color(sample, sample, sample);
@@ -72,6 +80,16 @@ public class PerlinNoise : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetMouseButton(0))
+        {
+            m_timer = Time.deltaTime.GetHashCode();
+            m_iSeedNumber = Time.time.GetHashCode();
+            if (m_iSeedNumber == 0)
+            {
+                m_iSeedNumber = System.DateTime.Now.GetHashCode();
+            }
+        };
+
         CalcNoise();
     }
 }
