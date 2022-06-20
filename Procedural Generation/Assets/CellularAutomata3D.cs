@@ -110,8 +110,8 @@ public class CellularAutomata3D : MonoBehaviour
             {
                 for (int z = 0; z < length; z++)
                 {
-                    float noisePer=Mathf.PerlinNoise( m_Noise.GetPixel(x, y).r, pseudoRandom.Next(0, 100) * 0.01f);
-                   
+                   // float noisePer=Mathf.PerlinNoise( m_Noise.GetPixel(x, y).r, pseudoRandom.Next(0, 100) * 0.01f);
+                    float noisePer =  pseudoRandom.Next(0, 100) * 0.01f;
                     //if (x == 0 || x == width - 1 ||
                     //    y == 0 || y == height - 1 |
                     //    z == 0 || z == length - 1
@@ -121,12 +121,12 @@ public class CellularAutomata3D : MonoBehaviour
                     //}//가장자리는 벽으로 채움
                     //else
                     //{
-                        //float noisePer = pseudoRandom.Next(0, 100) * 0.01f;
-                        float per = randomFillPercent * 0.01f;
+                    //float noisePer = pseudoRandom.Next(0, 100) * 0.01f;
+                    float per = randomFillPercent * 0.01f;
                         map[x, y, z] = (noisePer < per) ? WALL : ROAD;
                     //}//비율에 따라 벽 혹은 빈 공간 생성
                     //OnDrawTile(x, y); //타일 생성
-                    SetTileColor(x, y,z); //타일 색상 설정
+                    SetTileColor(x, y,z, map[x, y, z]); //타일 색상 설정
                 }
             
             }
@@ -136,6 +136,8 @@ public class CellularAutomata3D : MonoBehaviour
 
     private void SmoothMap()
     {
+        int[,,] CopyMap = new int[width, height, length];
+        //CopyMap = map;
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
@@ -145,23 +147,24 @@ public class CellularAutomata3D : MonoBehaviour
                     int neighbourWallTiles = GetSurroundingWallCount(x, y,z);
                     if (neighbourWallTiles > neighbourCheckCount)
                     {
-                        map[x, y, z] = WALL;
+                        CopyMap[x, y, z] = WALL;
                         print("WALL");
                     }//주변 칸 중 벽이 4칸을 초과할 경우 현재 타일을 벽으로 바꿈
-                    else if (neighbourWallTiles < 4)
-                    {
-                        map[x, y, z] = ROAD;
-                        print("ROAD");
-                    }//주변 칸 중 벽이 4칸 미만일 경우 현재 타일을 빈 공간으로 바꿈
+                    //else if (neighbourWallTiles < 4)
+                    //{
+                    //    CopyMap[x, y, z] = ROAD;
+                    //    print("ROAD");
+                    //}//주변 칸 중 벽이 4칸 미만일 경우 현재 타일을 빈 공간으로 바꿈
                     else if (neighbourWallTiles < neighbourCheckCount)
                     {
-                        map[x, y, z] = ROAD;
+                        CopyMap[x, y, z] = ROAD;
                         print("ROAD");
                     }//주변 칸 중 벽이 4칸 미만일 경우 현재 타일을 빈 공간으로 바꿈
-                    SetTileColor(x, y,z); //타일 색상 변경
+                    SetTileColor(x, y,z, CopyMap[x, y, z]); //타일 색상 변경
                 }
             }
         }
+        map = CopyMap;
     }
 
     private int GetSurroundingWallCount(int gridX, int gridY, int gridZ)
@@ -199,12 +202,12 @@ public class CellularAutomata3D : MonoBehaviour
         return wallCount;
     }
 
-    private void SetTileColor(int x, int y, int z)
+    private void SetTileColor(int x, int y, int z, int _ROADLWALL)
     {
         //Vector3Int pos = new Vector3Int(-width / 2 + x, -height / 2 + y, 0); //화면 중앙 정렬
         //tilemap.SetTileFlags(pos, TileFlags.None); //타일 색상을 수정하기 위해 TileFlags를 None으로 설정
       // print(map[x, y, z]);
-        switch (map[x, y,z])
+        switch (_ROADLWALL)
         {
             //      noiseTex.SetPixels(pix);
             //noiseTex.Apply();
