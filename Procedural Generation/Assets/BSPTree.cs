@@ -1,10 +1,10 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 /**
  * https://1217pgy.tistory.com/5
- * ¬¸∞Ì ∏µ≈©
+ * Ï∞∏Í≥† ÎßÅÌÅ¨
  */
 
 
@@ -67,7 +67,7 @@ public class BSPTree : MonoBehaviour
         float height = Mathf.Abs(m_vLeftTopPos.z - m_vRightBottomPos.z);
         float size = width * height;
 
-        System.Random pseudoRandom = new System.Random(Time.time.GetHashCode()); //Ω√µÂ∑Œ ∫Œ≈Õ ¿«ªÁ ≥≠ºˆ ª˝º∫
+        System.Random pseudoRandom = new System.Random(Time.time.GetHashCode()); //ÏãúÎìúÎ°ú Î∂ÄÌÑ∞ ÏùòÏÇ¨ ÎÇúÏàò ÏÉùÏÑ±
         float split = pseudoRandom.Next((int)(m_fMinPer * 100), (int)(m_fMaxPer * 100)) * 0.01f;
 
         m_treenode = new TREE_NODE_INFO(m_vCreatePos,width,height,0.5f);
@@ -75,7 +75,7 @@ public class BSPTree : MonoBehaviour
         m_treeBSPTree.Add(m_treenode.nodeName, m_treenode);
         Setting_BspTreeInfo(m_treeBSPTree[m_treenode.nodeName], 1, true);
         Create_Map(m_treeBSPTree[m_treenode.nodeName], 0,true);
-        CreateNode(m_treeBSPTree[m_treenode.nodeName]);
+        //CreateNode(m_treeBSPTree[m_treenode.nodeName]);
         print("MapSize" + m_treeBSPTree.Count.ToString());
     }
 
@@ -91,70 +91,72 @@ public class BSPTree : MonoBehaviour
         float height = Mathf.Abs(_treenode.height);
         float size = width * height;
 
-        if (m_fMinSize < size)
+        if (m_fMinSize< size)
         {
 
-            System.Random pseudoRandom = new System.Random(System.DateTime.Now.GetHashCode()+ _count); //Ω√µÂ∑Œ ∫Œ≈Õ ¿«ªÁ ≥≠ºˆ ª˝º∫
+            System.Random pseudoRandom = new System.Random(System.DateTime.Now.GetHashCode()+ _count); //ÏãúÎìúÎ°ú Î∂ÄÌÑ∞ ÏùòÏÇ¨ ÎÇúÏàò ÏÉùÏÑ±
             float split = pseudoRandom.Next((int)(m_fMinPer * 100), (int)(m_fMaxPer * 100)) * 0.01f;
 
-            if (_treenode.width > _treenode.height)    //∞°∑Œ ±Ê∂ß
+            if (_treenode.width > _treenode.height)    //Í∞ÄÎ°ú Í∏∏Îïå
             {
-                m_treenode.ParentNode = _treenode;
                 int temp = _count + 1;
                 float leftWidth = _treenode.width * split;
 
-                Vector3 leftPos = new Vector3(_treenode.vPos.x - (leftWidth*0.5f), _treenode.vPos.y, _treenode.vPos.z);
-                m_treenode.LeftNode = new TREE_NODE_INFO(leftPos, leftWidth, _treenode.height, split);
-                m_treenode.LeftNode.nodeName = _treenode.nodeName+ "L" + _count.ToString();
-                print(m_treenode.LeftNode.nodeName);
-                m_treeBSPTree.Add(m_treenode.LeftNode.nodeName, m_treenode.LeftNode);
-                Setting_BspTreeInfo(m_treeBSPTree[m_treenode.LeftNode.nodeName], _count + 1, false);
+                Vector3 leftPos = new Vector3(_treenode.vPos.x - (_treenode.width*0.5f) +  (leftWidth*0.5f), _treenode.vPos.y, _treenode.vPos.z);
+                _treenode.LeftNode = new TREE_NODE_INFO(leftPos, leftWidth, _treenode.height, split);
+                _treenode.LeftNode.ParentNode = _treenode;
+                _treenode.LeftNode.nodeName = _treenode.nodeName+ "L" + _count.ToString();
+                print(_treenode.LeftNode.nodeName);
+                m_treeBSPTree.Add(_treenode.LeftNode.nodeName, _treenode.LeftNode);
+                Setting_BspTreeInfo(m_treeBSPTree[_treenode.LeftNode.nodeName], _count + 1, false);
   
                 float rightWidth = _treenode.width * (1f - split);
  
-                Vector3 rightPos = new Vector3(_treenode.vPos.x + (rightWidth*0.5f), _treenode.vPos.y, _treenode.vPos.z);
-                m_treenode.RightNode = new TREE_NODE_INFO(rightPos, rightWidth, _treenode.height, split);
-                m_treenode.RightNode.nodeName = _treenode.nodeName + "R" + _count.ToString();
-                print(m_treenode.RightNode.nodeName);
-                    m_treeBSPTree.Add(m_treenode.RightNode.nodeName, m_treenode.RightNode);
-                Setting_BspTreeInfo(m_treeBSPTree[m_treenode.RightNode.nodeName], _count + 1, false);
+                Vector3 rightPos = new Vector3(_treenode.vPos.x +(_treenode.width*0.5f) -  (rightWidth*0.5f), _treenode.vPos.y, _treenode.vPos.z);
+                _treenode.RightNode = new TREE_NODE_INFO(rightPos, rightWidth, _treenode.height, split);
+                _treenode.RightNode.ParentNode = _treenode;
+                _treenode.RightNode.nodeName = _treenode.nodeName + "R" + _count.ToString();
+                print(_treenode.RightNode.nodeName);
+                    m_treeBSPTree.Add(_treenode.RightNode.nodeName, _treenode.RightNode);
+                Setting_BspTreeInfo(m_treeBSPTree[_treenode.RightNode.nodeName], _count + 1, true);
 
                 
             }
-            else // ºº∑Œ  //ºº∑Œ∞° ±Ê∂ß
+            else // ÏÑ∏Î°ú  //ÏÑ∏Î°úÍ∞Ä Í∏∏Îïå
             {
-                m_treenode.ParentNode = _treenode;
                 int temp = _count + 1;
                 float topHeight = _treenode.height * split;
 
-                Vector3 topPos = new Vector3(_treenode.vPos.x, _treenode.vPos.y, _treenode.vPos.z + (topHeight*0.5f));
-                    m_treenode.LeftNode = new TREE_NODE_INFO(topPos, _treenode.width, topHeight, split);
-                    m_treenode.LeftNode.nodeName = _treenode.nodeName + "T" + _count.ToString();
-                    print(m_treenode.LeftNode.nodeName);
-                    m_treeBSPTree.Add(m_treenode.LeftNode.nodeName, m_treenode.LeftNode);
-                    Setting_BspTreeInfo(m_treeBSPTree[m_treenode.LeftNode.nodeName], _count + 1, false);
+                Vector3 topPos = new Vector3(_treenode.vPos.x, _treenode.vPos.y, _treenode.vPos.z +(_treenode.height*0.5f) -  (topHeight*0.5f));
+                    _treenode.LeftNode = new TREE_NODE_INFO(topPos, _treenode.width, topHeight, split);
+                    _treenode.LeftNode.ParentNode = _treenode;
+                    _treenode.LeftNode.nodeName = _treenode.nodeName + "T" + _count.ToString();
+                    print(_treenode.LeftNode.nodeName);
+                    m_treeBSPTree.Add(_treenode.LeftNode.nodeName, _treenode.LeftNode);
+                    Setting_BspTreeInfo(m_treeBSPTree[_treenode.LeftNode.nodeName], _count + 1, false);
 
 
 
                 float bottomHeight = _treenode.height * (1f - split);
          
-                    Vector3 bottomPos = new Vector3(_treenode.vPos.x, _treenode.vPos.y, _treenode.vPos.z - (bottomHeight*0.5f));
-                    m_treenode.RightNode = new TREE_NODE_INFO(bottomPos, _treenode.width, bottomHeight, split);
-                    m_treenode.RightNode.nodeName = _treenode.nodeName + "B" + _count.ToString();
-                    print(m_treenode.RightNode.nodeName);
-                    m_treeBSPTree.Add(m_treenode.RightNode.nodeName, m_treenode.RightNode);
-                    Setting_BspTreeInfo(m_treeBSPTree[m_treenode.RightNode.nodeName], _count + 1, false);
+                    Vector3 bottomPos = new Vector3(_treenode.vPos.x, _treenode.vPos.y, _treenode.vPos.z - (_treenode.height*0.5f) + (bottomHeight*0.5f));
+                    _treenode.RightNode = new TREE_NODE_INFO(bottomPos, _treenode.width, bottomHeight, split);
+                    _treenode.RightNode.ParentNode = _treenode;
+                    _treenode.RightNode.nodeName = _treenode.nodeName + "B" + _count.ToString();
+                    print(_treenode.RightNode.nodeName);
+                    m_treeBSPTree.Add(_treenode.RightNode.nodeName, _treenode.RightNode);
+                    Setting_BspTreeInfo(m_treeBSPTree[_treenode.RightNode.nodeName], _count + 1, true);
     
             }
 
         }
-        else
-        {
-            // print("SizeOut");
-            _treenode.bRoomTruefalse = true;
-            _treenode.LeftNode = null;
-            _treenode.RightNode = null;
-        }
+        // else
+        // {
+        //     // print("SizeOut");
+        //     _treenode.bRoomTruefalse = true;
+        //     _treenode.LeftNode = null;
+        //     _treenode.RightNode = null;
+        // }
 
     }
     public int instancecount = 0;
